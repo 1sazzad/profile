@@ -1,4 +1,4 @@
-@import '../../styles.css';
+@import '../styles.css';
 
 /* React v2: the original visual language, with composable image slots and interactions. */
 .portrait-replace-note{position:absolute;z-index:3;bottom:14px;left:50%;transform:translateX(-50%);white-space:nowrap;background:rgba(13,30,36,.85);backdrop-filter:blur(7px);border:1px solid rgba(255,255,255,.22);color:#cddcd9;padding:9px 12px;font-size:9px;letter-spacing:.12em;display:flex;gap:10px;align-items:center}
