@@ -1,5 +1,6 @@
 import { photoSlots } from './data.js';
 import { photosForStem } from './photoGrouping.js';
+import { buildDescriptionLookup, descriptionForImage } from './photoDescriptions.js';
 
 // Vite discovers every photo during the build. Users only need to drop images
 // into src/assets/photos and push; there is no manifest to maintain.
@@ -8,12 +9,19 @@ const files = import.meta.glob('./assets/photos/**/*.{jpg,jpeg,png,webp,avif,JPG
   query: '?url',
   import: 'default',
 });
+// Each image may have an optional matching .txt file with a short caption.
+const captionFiles = import.meta.glob('./assets/photos/**/*.{txt,TXT}', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+});
+const descriptions = buildDescriptionLookup(captionFiles);
 
 const entries = Object.entries(files).map(([path, url]) => {
   const relativePath = path.split('/assets/photos/')[1];
   const segments = relativePath.split('/');
   const filename = segments.at(-1);
-  return { path, stem: filename.replace(/\.[^.]+$/, '').toLowerCase(), group: segments.length > 1 ? segments[0].toLowerCase() : null, filename, url };
+  return { path, stem: filename.replace(/\.[^.]+$/, '').toLowerCase(), group: segments.length > 1 ? segments[0].toLowerCase() : null, filename, url, description: descriptionForImage(path, descriptions) };
 });
 
 const assetByStem = new Map(entries.filter((entry) => !entry.group).map((entry) => [entry.stem, entry.url]));

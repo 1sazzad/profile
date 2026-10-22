@@ -31,7 +31,8 @@ export default function TopicCarousel({ stem, title, className = '' }) {
 
   return (
     <div className={'topic-carousel ' + className} role="region" aria-roledescription="carousel" aria-label={title + ' photos'} tabIndex={total > 1 ? 0 : undefined} onKeyDown={total > 1 ? onKeyDown : undefined} onTouchStart={(event) => { swipeStart.current = event.touches[0].clientX; }} onTouchEnd={endTouch}>
-      <PhotoSlot key={active?.path || stem} stem={stem} src={active?.url} title={title} className="topic-carousel-photo" alt={title + (total > 1 ? ', image ' + (index + 1) + ' of ' + total : '')} />
+      <PhotoSlot key={active?.path || stem} stem={stem} src={active?.url} title={title} className="topic-carousel-photo" alt={active?.description || title + (total > 1 ? ', image ' + (index + 1) + ' of ' + total : '')} />
+      {active?.description && <p className="topic-carousel-caption" aria-live="polite">{active.description}</p>}
       {total > 1 && <>
         <div className="topic-carousel-controls">
           <button type="button" onClick={() => move(-1)} aria-label={'Previous ' + title + ' photo'}>←</button>
