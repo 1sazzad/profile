@@ -101,8 +101,18 @@
 .gallery-footnote{font-size:11px;color:#77847d;line-height:1.7;margin:23px 0 0}
 .react-lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(5,16,21,.96);padding:35px;color:white}
 .react-lightbox-content{width:min(100%,1150px);max-height:95vh;position:relative;display:flex;align-items:center;flex-direction:column}
-.react-lightbox-content>img{max-height:calc(95vh - 170px);max-width:100%;object-fit:contain;box-shadow:0 24px 80px rgba(0,0,0,.3)}
-.react-lightbox-close{position:absolute;top:-19px;right:0;width:43px;height:43px;border:1px solid rgba(255,255,255,.6);border-radius:50%;background:#21353e;color:white;cursor:pointer}
+.lightbox-photo-stage{position:relative;display:grid;place-items:center;max-width:100%;min-height:0;overflow:hidden}
+.lightbox-photo-stage>img{display:block;max-height:calc(95vh - 170px);max-width:100%;object-fit:contain;box-shadow:0 24px 80px rgba(0,0,0,.3);user-select:none;cursor:zoom-in;transition:transform .12s ease-out}
+.lightbox-photo-stage>img.photo-zoomed{cursor:grab;touch-action:none}
+.lightbox-photo-stage>img.photo-zoomed:active{cursor:grabbing}
+.photo-zoom-toolbar{position:absolute;z-index:5;top:14px;left:14px;display:flex;align-items:center;gap:5px;padding:5px;background:rgba(13,30,35,.86);border:1px solid rgba(255,255,255,.22);border-radius:30px;backdrop-filter:blur(8px);color:white}
+.photo-zoom-toolbar button{display:grid;place-items:center;min-width:32px;height:32px;padding:0 8px;border:0;border-radius:20px;background:rgba(255,255,255,.13);color:white;font-size:19px;cursor:pointer}
+.photo-zoom-toolbar button:hover:not(:disabled){background:var(--lime);color:var(--deep)}
+.photo-zoom-toolbar button:disabled{opacity:.4;cursor:not-allowed}
+.photo-zoom-toolbar output{min-width:43px;text-align:center;font:600 11px var(--display);font-variant-numeric:tabular-nums}
+.photo-zoom-toolbar .photo-zoom-reset{font-size:11px;font-weight:700;padding:0 12px}
+.photo-zoom-hint{position:absolute;z-index:4;right:16px;bottom:14px;padding:8px 11px;background:rgba(13,30,35,.8);color:#eff4ea;font-size:11px;pointer-events:none}
+.react-lightbox-close{position:absolute;z-index:8;top:-19px;right:0;width:43px;height:43px;border:1px solid rgba(255,255,255,.6);border-radius:50%;background:#21353e;color:white;cursor:pointer}
 .react-lightbox-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;width:100%;padding-top:23px}
 .react-lightbox-copy{display:flex;flex-direction:column;gap:7px;max-width:720px}
 .react-lightbox-bottom small{font-size:10px;letter-spacing:.13em;color:#a1b5b1}
@@ -117,4 +127,4 @@
 @media(max-width:1100px){.journey-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.journey-photo{height:240px}.awards-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.awards-strip .eyebrow{grid-column:1/-1}.gallery-progress{grid-template-columns:auto 1fr}.gallery-progress>p{grid-column:1/-1;max-width:none}}
 @media(max-width:950px){.react-research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.react-gallery-card{min-height:310px}.react-gallery-card.wide,.react-gallery-card.narrow{grid-column:span 6}.react-gallery-card{grid-column:span 6}}
 @media(max-width:650px){.portrait-replace-note{bottom:12px;padding:6px 9px;font-size:8px}.research-tabs{margin:-5px 0 20px}.research-tabs button{font-size:11px;padding:10px 12px}.react-research-grid{grid-template-columns:1fr}.research-photo{height:215px;min-height:215px}.journey-photo-grid{grid-template-columns:1fr}.journey-photo{height:245px}.journey-photo-copy{padding:23px}.awards-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 15px;margin-top:40px}.awards-strip .eyebrow{grid-column:1/-1}.gallery-progress{grid-template-columns:1fr;gap:9px;margin:0 0 25px}.gallery-progress>p{grid-column:auto}.react-gallery-card,.react-gallery-card.wide,.react-gallery-card.narrow{grid-column:span 12;min-height:330px}.react-gallery-card{padding:22px}.react-lightbox{padding:12px}.react-lightbox-bottom{flex-direction:column;align-items:flex-start;gap:15px}.react-lightbox-close{top:1px;right:5px}.photo-slot-empty strong{font-size:24px}.topic-carousel-dots{left:12px}.topic-carousel-controls{right:10px}.topic-carousel-add{font-size:8px}}
-@media(prefers-reduced-motion:reduce){.project-detail,.topic-carousel-photo{animation:none}.react-photo-slot>img,.react-gallery-card.populated>img,.journey-photo-card{transition:none}}
+@media(prefers-reduced-motion:reduce){.project-detail,.topic-carousel-photo{animation:none}.react-photo-slot>img,.react-gallery-card.populated>img,.journey-photo-card,.lightbox-photo-stage>img{transition:none}}

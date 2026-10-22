@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { galleryItems, photosAdded, topicsFilled } from '../gallery.js';
+import ZoomablePhoto from './ZoomablePhoto.jsx';
 
 const filters = [
   { key: 'all', label: 'All moments' },
@@ -71,7 +72,7 @@ export default function Gallery() {
         </div>
         <p className="gallery-footnote">Each topic becomes a slideshow when you add two or more matching files. Unmatched extra images also appear automatically in the gallery.</p>
       </div>
-      {selected && <div className="react-lightbox" role="dialog" aria-modal="true" aria-label={selected.item.title + ' photo slideshow'} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}><div className="react-lightbox-content"><button ref={closeRef} type="button" className="react-lightbox-close" aria-label="Close photo" onClick={close}>✕</button><img src={selectedPhoto.url} alt={selectedPhoto.description || selected.item.title + ', photo ' + (selected.index + 1)} /><div className="react-lightbox-bottom"><div className="react-lightbox-copy"><small>{selected.item.category.toUpperCase()}</small><strong>{selected.item.title}</strong><p className="lightbox-description" aria-live="polite">{selectedPhoto.description || selected.item.hint}</p></div><div className="lightbox-controls"><button type="button" aria-label="Previous photo" disabled={selected.item.photos.length < 2} onClick={() => move(-1)}>←</button><span>{selected.index + 1} / {selected.item.photos.length}</span><button type="button" aria-label="Next photo" disabled={selected.item.photos.length < 2} onClick={() => move(1)}>→</button></div></div></div></div>}
+      {selected && <div className="react-lightbox" role="dialog" aria-modal="true" aria-label={selected.item.title + ' photo slideshow'} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}><div className="react-lightbox-content"><button ref={closeRef} type="button" className="react-lightbox-close" aria-label="Close photo" onClick={close}>✕</button><ZoomablePhoto key={selected.item.stem + ':' + selected.index} src={selectedPhoto.url} alt={selectedPhoto.description || selected.item.title + ', photo ' + (selected.index + 1)} /><div className="react-lightbox-bottom"><div className="react-lightbox-copy"><small>{selected.item.category.toUpperCase()}</small><strong>{selected.item.title}</strong><p className="lightbox-description" aria-live="polite">{selectedPhoto.description || selected.item.hint}</p></div><div className="lightbox-controls"><button type="button" aria-label="Previous photo" disabled={selected.item.photos.length < 2} onClick={() => move(-1)}>←</button><span>{selected.index + 1} / {selected.item.photos.length}</span><button type="button" aria-label="Next photo" disabled={selected.item.photos.length < 2} onClick={() => move(1)}>→</button></div></div></div></div>}
     </section>
   );
 }

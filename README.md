@@ -53,6 +53,8 @@ src/assets/photos/
 
 Your original top-level photos and older naming pattern are still supported. Their images join the matching event collection automatically. New photos display in natural numeric order (`1, 2, 3, …, 10`), with carousel arrows, dots, keyboard arrows and mobile swipe. A single photo displays normally.
 
+**Viewing photos:** Open a gallery image to use the full-screen viewer. Press **+** or **−** to zoom between 100% and 400%, use the mouse wheel, or double-click the image. When zoomed in, drag it to inspect details; press **Reset** to return to the original view. Switching to another slide resets the zoom automatically. The same on-screen buttons work on phones and tablets.
+
 ### Add a short description to each photo
 
 Place a plain-text file next to the matching image with the **same number or name**. For example:
