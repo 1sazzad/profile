@@ -128,3 +128,16 @@
 @media(max-width:950px){.react-research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.react-gallery-card{min-height:310px}.react-gallery-card.wide,.react-gallery-card.narrow{grid-column:span 6}.react-gallery-card{grid-column:span 6}}
 @media(max-width:650px){.portrait-replace-note{bottom:12px;padding:6px 9px;font-size:8px}.research-tabs{margin:-5px 0 20px}.research-tabs button{font-size:11px;padding:10px 12px}.react-research-grid{grid-template-columns:1fr}.research-photo{height:215px;min-height:215px}.journey-photo-grid{grid-template-columns:1fr}.journey-photo{height:245px}.journey-photo-copy{padding:23px}.awards-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 15px;margin-top:40px}.awards-strip .eyebrow{grid-column:1/-1}.gallery-progress{grid-template-columns:1fr;gap:9px;margin:0 0 25px}.gallery-progress>p{grid-column:auto}.react-gallery-card,.react-gallery-card.wide,.react-gallery-card.narrow{grid-column:span 12;min-height:330px}.react-gallery-card{padding:22px}.react-lightbox{padding:12px}.react-lightbox-bottom{flex-direction:column;align-items:flex-start;gap:15px}.react-lightbox-close{top:1px;right:5px}.photo-slot-empty strong{font-size:24px}.topic-carousel-dots{left:12px}.topic-carousel-controls{right:10px}.topic-carousel-add{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.project-detail,.topic-carousel-photo{animation:none}.react-photo-slot>img,.react-gallery-card.populated>img,.journey-photo-card,.lightbox-photo-stage>img{transition:none}}
+
+/* About section portrait: uses about.jpg, then portrait.jpg, then the profile avatar. */
+.about-sidebar{display:flex;flex-direction:column;align-items:stretch;gap:42px;min-width:0}
+.about-sidebar .section-label{line-height:1.55}
+.about-photo-card{margin:0;position:relative;width:100%;aspect-ratio:4/5;min-height:280px;background:#c0d0c7;overflow:hidden;isolation:isolate}
+.about-photo-card img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(.88);transition:transform .5s ease}
+.about-photo-card:hover img{transform:scale(1.035)}
+.about-photo-card:after{content:'';position:absolute;inset:52% 0 0;background:linear-gradient(transparent,rgba(8,28,34,.75));pointer-events:none}
+.about-photo-card figcaption{position:absolute;z-index:1;left:20px;right:20px;bottom:19px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#f4f8ef;font-size:10px;font-weight:700;letter-spacing:.13em}
+.about-photo-card figcaption span:last-child{font-size:22px;color:var(--lime)}
+@media(max-width:950px){.about-sidebar{display:contents}.about-sidebar .section-label{order:0}.about-main{order:1}.about-photo-card{order:2;max-width:410px;margin-top:8px}}
+@media(max-width:650px){.about-photo-card{width:min(100%,345px);min-height:260px;margin-top:0}.about-photo-card figcaption{font-size:9px;bottom:15px;left:16px;right:16px}}
+@media(prefers-reduced-motion:reduce){.about-photo-card img{transition:none}}

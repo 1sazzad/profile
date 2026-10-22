@@ -13,6 +13,7 @@ Put photos in **`src/assets/photos/`**. Supported extensions: `.jpg`, `.jpeg`, `
 | Place on website | Folder inside `src/assets/photos/` |
 | --- | --- |
 | Homepage portrait | `portrait.jpg` (top-level image, not a folder) |
+| About section portrait | `about.jpg` (top-level image; falls back to homepage portrait or GitHub avatar) |
 | Underwater research | `underwater/` |
 | Model reliability research | `model-reliability/` |
 | Thermal IR research | `thermal-ir/` |
