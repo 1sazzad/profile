@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { galleryItems, photosAdded, topicsFilled } from '../gallery.js';
+import { galleryItems } from '../gallery.js';
 import ZoomablePhoto from './ZoomablePhoto.jsx';
 
-const filters = [
-  { key: 'all', label: 'All moments' },
+const categories = [
+  { key: 'all', label: 'All' },
   { key: 'research', label: 'Research' },
   { key: 'events', label: 'Events' },
   { key: 'awards', label: 'Awards' },
@@ -15,7 +15,8 @@ export default function Gallery() {
   const [selected, setSelected] = useState(null);
   const closeRef = useRef(null);
   const previousFocus = useRef(null);
-  const filtered = galleryItems.filter((item) => filter === 'all' || item.category === filter);
+  const populated = galleryItems.filter((item) => item.photos.length > 0);
+  const filtered = populated.filter((item) => filter === 'all' || item.category === filter);
   const selectedPhoto = selected?.item.photos[selected.index];
 
   function open(item) {
@@ -40,39 +41,53 @@ export default function Gallery() {
     const former = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     closeRef.current?.focus();
-    function keyHandler(event) {
+    function onKeyDown(event) {
       if (event.key === 'Escape') close();
       if (event.key === 'ArrowLeft') move(-1);
       if (event.key === 'ArrowRight') move(1);
       if (event.key === 'Tab') {
-        const buttons = Array.from(document.querySelectorAll('.react-lightbox button'));
-        if (!buttons.length) return;
+        const buttons = [...document.querySelectorAll('.photo-dialog button:not(:disabled)')];
         const first = buttons[0];
-        const last = buttons[buttons.length - 1];
+        const last = buttons.at(-1);
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       }
     }
-    document.addEventListener('keydown', keyHandler);
-    return () => { document.body.style.overflow = former; document.removeEventListener('keydown', keyHandler); };
+    document.addEventListener('keydown', onKeyDown);
+    return () => { document.body.style.overflow = former; document.removeEventListener('keydown', onKeyDown); };
   }, [selected]);
 
   return (
-    <section className="section gallery-section" id="gallery" aria-labelledby="gallery-heading">
-      <div className="container">
-        <div className="section-top"><div><p className="section-kicker"><span className="index-bubble">04</span> A VISUAL JOURNAL</p><h2 id="gallery-heading">Moments beyond<br /><em>the milestones.</em></h2></div><p className="section-intro">Your photographs will automatically fill these curated spaces. Filter the archive, and open any added image to explore.</p></div>
-        <div className="gallery-progress"><div><strong>{photosAdded}</strong><span> photos across {topicsFilled} of {galleryItems.length} topics</span></div><div className="gallery-progress-track"><span style={{ width: (topicsFilled / Math.max(galleryItems.length, 1) * 100) + '%' }} /></div><p>Upload numbered images inside each event folder, for example <code>club/1.jpg</code>, <code>club/2.jpg</code>.</p></div>
-        <div className="gallery-toolbar"><div className="gallery-filters" aria-label="Photo categories">{filters.map((item) => <button key={item.key} type="button" className={'filter-button ' + (filter === item.key ? 'active' : '')} aria-pressed={filter === item.key} onClick={() => setFilter(item.key)}>{item.label}</button>)}</div><span className="gallery-count">{filtered.length} TOPICS · {filtered.reduce((count, item) => count + item.photos.length, 0)} PHOTOS</span></div>
-        <div className="gallery-grid react-gallery-grid">
-          {filtered.map((item, index) => {
-            const className = 'react-gallery-card ' + (item.size || '') + ' color-' + item.category;
-            return item.url ? <button key={item.stem} type="button" className={className + ' populated'} onClick={() => open(item)} aria-label={'Open ' + item.title + ' photo collection'}><img src={item.url} alt={item.photos[0]?.description || item.title} loading="lazy" />{item.photos.length > 1 && <span className="gallery-slide-count">{item.photos.length} PHOTOS</span>}<span className="react-gallery-caption"><small>{item.category} / {String(index + 1).padStart(2, '0')}</small><strong>{item.title}</strong><span aria-hidden="true">↗</span>{item.photos[0]?.description && <p className="gallery-card-description">{item.photos[0].description}</p>}</span></button> :
-              <article key={item.stem} className={className + ' empty'}><div className="gallery-placeholder-pattern" aria-hidden="true">✳</div><div className="gallery-card-top"><span>{item.category} / {String(index + 1).padStart(2, '0')}</span><span>+ PHOTOS</span></div><div className="gallery-card-bottom"><h3>{item.title}</h3><p>{item.hint}</p><code>{item.folder || item.stem}/1.jpg</code><code>{item.folder || item.stem}/2.jpg</code></div></article>;
-          })}
+    <section className="content-section gallery-section" id="gallery" aria-labelledby="gallery-title">
+      <h2 id="gallery-title">Selected photographs</h2>
+      <p className="section-lead">Research presentations, competitions, and activities with the Programming Club of IST. Select an album to view its images and captions.</p>
+      {populated.length ? <>
+        <div className="photo-filters" role="group" aria-label="Filter photo albums">
+          {categories.filter((category) => category.key === 'all' || populated.some((item) => item.category === category.key)).map((category) => (
+            <button type="button" key={category.key} className={filter === category.key ? 'is-active' : ''} aria-pressed={filter === category.key} onClick={() => setFilter(category.key)}>{category.label}</button>
+          ))}
         </div>
-        <p className="gallery-footnote">Each topic becomes a slideshow when you add two or more matching files. Unmatched extra images also appear automatically in the gallery.</p>
-      </div>
-      {selected && <div className="react-lightbox" role="dialog" aria-modal="true" aria-label={selected.item.title + ' photo slideshow'} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}><div className="react-lightbox-content"><button ref={closeRef} type="button" className="react-lightbox-close" aria-label="Close photo" onClick={close}>✕</button><ZoomablePhoto key={selected.item.stem + ':' + selected.index} src={selectedPhoto.url} alt={selectedPhoto.description || selected.item.title + ', photo ' + (selected.index + 1)} /><div className="react-lightbox-bottom"><div className="react-lightbox-copy"><small>{selected.item.category.toUpperCase()}</small><strong>{selected.item.title}</strong><p className="lightbox-description" aria-live="polite">{selectedPhoto.description || selected.item.hint}</p></div><div className="lightbox-controls"><button type="button" aria-label="Previous photo" disabled={selected.item.photos.length < 2} onClick={() => move(-1)}>←</button><span>{selected.index + 1} / {selected.item.photos.length}</span><button type="button" aria-label="Next photo" disabled={selected.item.photos.length < 2} onClick={() => move(1)}>→</button></div></div></div></div>}
+        {filtered.length ? <div className="photo-grid">
+          {filtered.map((item) => (
+            <button type="button" className="album-card" key={item.stem} onClick={() => open(item)} aria-label={`Open ${item.title}, ${item.photos.length} ${item.photos.length === 1 ? 'photograph' : 'photographs'}`}>
+              <img src={item.photos[0].url} alt={item.photos[0].description || item.title} loading="lazy" />
+              <span className="album-title">{item.title}</span>
+              <span className="album-count">{item.photos.length} {item.photos.length === 1 ? 'photo' : 'photos'}</span>
+              {item.photos[0].description && <span className="album-caption">{item.photos[0].description}</span>}
+            </button>
+          ))}
+        </div> : <p className="empty-note">No photographs in this category yet.</p>}
+      </> : <p className="empty-note">Photographs will appear here when added to the event folders.</p>}
+      {selected && <div className="photo-dialog" role="dialog" aria-modal="true" aria-label={`${selected.item.title} photo album`} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
+        <div className="photo-dialog-content">
+          <div className="dialog-header"><strong>{selected.item.title}</strong><button ref={closeRef} type="button" aria-label="Close photograph" onClick={close}>Close ✕</button></div>
+          <ZoomablePhoto key={`${selected.item.stem}:${selected.index}`} src={selectedPhoto.url} alt={selectedPhoto.description || `${selected.item.title}, image ${selected.index + 1}`} />
+          <div className="dialog-footer">
+            <p aria-live="polite">{selectedPhoto.description || selected.item.hint}</p>
+            <div className="dialog-paging"><button type="button" disabled={selected.item.photos.length < 2} onClick={() => move(-1)} aria-label="Previous photo">←</button><span>{selected.index + 1} / {selected.item.photos.length}</span><button type="button" disabled={selected.item.photos.length < 2} onClick={() => move(1)} aria-label="Next photo">→</button></div>
+          </div>
+        </div>
+      </div>}
     </section>
   );
 }
