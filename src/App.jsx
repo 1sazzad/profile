@@ -3,18 +3,16 @@ import TopicCarousel from './components/TopicCarousel.jsx';
 import Gallery from './components/Gallery.jsx';
 import { photoUrl } from './gallery.js';
 import { researchProjects, publications, milestones } from './data.js';
-import { pages, pageFromHash, pageHref } from './routes.js';
 
-function Navigation({ page }) {
+function Navigation() {
   const [open, setOpen] = useState(false);
+  const links = [['about', 'About'], ['research', 'Research'], ['journey', 'Journey'], ['gallery', 'Gallery']];
   useEffect(() => {
     function onEscape(event) { if (event.key === 'Escape') setOpen(false); }
     window.addEventListener('keydown', onEscape);
     return () => window.removeEventListener('keydown', onEscape);
   }, []);
-  useEffect(() => { setOpen(false); }, [page]);
-  const menuLinks = pages.filter((item) => item.id !== 'contact');
-  return <header className={'site-header page-site-header ' + (open ? 'menu-open' : '')} id="top"><div className="container nav-inner"><a className="wordmark" href={pageHref('home')} onClick={() => setOpen(false)}>sazzad<span className="wordmark-dot">.</span></a><nav className="desktop-nav" aria-label="Primary navigation">{menuLinks.map((item) => <a key={item.id} href={pageHref(item.id)} aria-current={page === item.id ? 'page' : undefined}>{item.label}</a>)}</nav><div className="nav-actions"><a className="nav-contact" href={pageHref('contact')} aria-current={page === 'contact' ? 'page' : undefined}>Let's connect <span aria-hidden="true">↗</span></a><button className="menu-toggle" type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}><span></span><span></span></button></div></div><nav className="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden={!open}>{pages.map((item) => <a key={item.id} href={pageHref(item.id)} aria-current={page === item.id ? 'page' : undefined} onClick={() => setOpen(false)}>{item.label}<span aria-hidden="true">↗</span></a>)}</nav></header>;
+  return <header className="site-header" id="top"><div className="container nav-inner"><a className="wordmark" href="#top" onClick={() => setOpen(false)}>sazzad<span className="wordmark-dot">.</span></a><nav className="desktop-nav" aria-label="Primary navigation">{links.map(([id, text]) => <a key={id} href={'#' + id}>{text}</a>)}</nav><div className="nav-actions"><a className="nav-contact" href="#contact">Let's connect <span aria-hidden="true">↗</span></a><button className="menu-toggle" type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}><span></span><span></span></button></div></div><nav className="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden={!open}>{[...links, ['contact', 'Contact']].map(([id, text]) => <a key={id} href={'#' + id} onClick={() => setOpen(false)}>{text}</a>)}</nav></header>;
 }
 
 function ScrollProgress() {
@@ -40,35 +38,12 @@ function ScrollProgress() {
 
 function Hero() {
   const portrait = photoUrl('portrait');
-  return <section className="hero section-dark" aria-labelledby="hero-heading"><div className="container hero-grid"><div className="hero-copy"><div className="availability"><span className="pulse-dot" aria-hidden="true"></span> Open to research collaborations</div><p className="eyebrow hero-eyebrow">Researcher <span className="slash">/</span> Builder <span className="slash">/</span> Lifelong learner</p><h1 id="hero-heading">Driven by<br /><em>curiosity.</em><br />Built with <span className="outline-word">purpose.</span></h1><p className="hero-intro">I'm <strong>Md Sazzad Hossain</strong> — exploring how intelligent systems can see, understand, and make sense of our world.</p><div className="hero-buttons"><a className="button button-lime" href={pageHref('research')}>Explore my work <span aria-hidden="true">↗</span></a><a className="text-link hero-link" href={pageHref('about')}>More about me <span aria-hidden="true">↗</span></a></div></div><div className="hero-visual" aria-label="Portrait and research identity"><div className="hero-visual-lines" aria-hidden="true"><span></span><span></span><span></span></div><div className="hero-portrait-frame"><img className="hero-portrait" src={portrait || 'https://avatars.githubusercontent.com/u/183905160?v=4'} alt="Md Sazzad Hossain" />{!portrait && <div className="portrait-replace-note">PHOTO SLOT <strong>portrait.jpg</strong></div>}</div><div className="hero-visual-label"><span className="tiny-cross">✳</span> Bangladesh <span className="label-spacer"></span> Research · Code · Community</div><div className="orbit orbit-one" aria-hidden="true"></div><div className="orbit orbit-two" aria-hidden="true"></div><div className="hero-sticker"><span>Always<br />in motion</span>↗</div></div></div><div className="hero-foot container"><span>01 / INTRODUCTION</span><span className="scroll-note">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></span></div></section>;
+  return <section className="hero section-dark" aria-labelledby="hero-heading"><div className="container hero-grid"><div className="hero-copy"><div className="availability"><span className="pulse-dot" aria-hidden="true"></span> Open to research collaborations</div><p className="eyebrow hero-eyebrow">Researcher <span className="slash">/</span> Builder <span className="slash">/</span> Lifelong learner</p><h1 id="hero-heading">Driven by<br /><em>curiosity.</em><br />Built with <span className="outline-word">purpose.</span></h1><p className="hero-intro">I'm <strong>Md Sazzad Hossain</strong> — exploring how intelligent systems can see, understand, and make sense of our world.</p><div className="hero-buttons"><a className="button button-lime" href="#research">Explore my work <span aria-hidden="true">↗</span></a><a className="text-link hero-link" href="#about">More about me <span aria-hidden="true">↓</span></a></div></div><div className="hero-visual" aria-label="Portrait and research identity"><div className="hero-visual-lines" aria-hidden="true"><span></span><span></span><span></span></div><div className="hero-portrait-frame"><img className="hero-portrait" src={portrait || 'https://avatars.githubusercontent.com/u/183905160?v=4'} alt="Md Sazzad Hossain" />{!portrait && <div className="portrait-replace-note">PHOTO SLOT <strong>portrait.jpg</strong></div>}</div><div className="hero-visual-label"><span className="tiny-cross">✳</span> Bangladesh <span className="label-spacer"></span> Research · Code · Community</div><div className="orbit orbit-one" aria-hidden="true"></div><div className="orbit orbit-two" aria-hidden="true"></div><div className="hero-sticker"><span>Always<br />in motion</span>↗</div></div></div><div className="hero-foot container"><span>01 / INTRODUCTION</span><span className="scroll-note">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></span></div></section>;
 }
 
 function Marquee() {
   const labels = ['COMPUTER VISION', 'DEEP LEARNING', 'THERMAL INFRARED', 'REMOTE SENSING', 'RESEARCH'];
   return <div className="discipline-strip"><div className="strip-track" aria-hidden="true">{[...labels, ...labels].map((label, index) => <React.Fragment key={label + index}><span>{label}</span><b>✳</b></React.Fragment>)}</div></div>;
-}
-
-const pageIntroductions = {
-  about: { number: '01', label: 'The person', title: 'More than the work.', detail: 'The curiosity, education, and communities shaping my path.' },
-  research: { number: '02', label: 'Research & publications', title: 'Following the questions.', detail: 'A closer look at my computer vision research and new directions in Earth observation.' },
-  journey: { number: '03', label: 'Experience & milestones', title: 'Learning by doing.', detail: 'Competitive programming, community leadership, teaching, and the moments in between.' },
-  gallery: { number: '04', label: 'The photo archive', title: 'Stories in frames.', detail: 'Browse event collections, read photo descriptions, and explore each image up close.' },
-  contact: { number: '05', label: 'Get in touch', title: 'Start a conversation.', detail: 'Research collaborations, learning opportunities, or an idea you would like to explore together.' },
-};
-
-function PageIntroduction({ page }) {
-  const content = pageIntroductions[page];
-  return <section className="page-introduction section-dark" aria-label={content.label}><div className="container page-intro-inner"><div><p className="eyebrow"><span className="intro-number">{content.number}</span> / {content.label}</p><h1>{content.title}</h1></div><p>{content.detail}</p></div><div className="page-intro-line container"><span>MD SAZZAD HOSSAIN</span><span>EXPLORE <span aria-hidden="true">↓</span></span></div></section>;
-}
-
-const homeFeatures = [
-  { page: 'research', kicker: '01 / THE QUESTIONS', title: 'Research & discovery', copy: 'Computer vision, robust recognition, and the growing possibilities of satellite thermal infrared.' },
-  { page: 'journey', kicker: '02 / THE EXPERIENCE', title: 'People & progress', copy: 'From the ICPC regional stage to teaching and leading a campus programming community.' },
-  { page: 'gallery', kicker: '03 / THE MOMENTS', title: 'The visual journal', copy: 'Photographs, event collections, and the stories behind the milestones.' },
-];
-
-function HomeOverview() {
-  return <section className="section home-overview" aria-labelledby="home-overview-heading"><div className="container"><div className="home-overview-top"><div><p className="section-kicker">A LITTLE OF EVERYTHING</p><h2 id="home-overview-heading">Different paths.<br /><em>One curiosity.</em></h2></div><p>Explore the work, experiences, and photographs in their own spaces. Every part of this portfolio has a story to tell.</p></div><div className="home-feature-grid">{homeFeatures.map((item) => <a key={item.page} className={'home-feature-card home-feature-' + item.page} href={pageHref(item.page)}><span className="home-feature-kicker">{item.kicker}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div><span className="home-feature-link">Explore {item.page} <span aria-hidden="true">↗</span></span></a>)}</div><div className="home-closer"><p>Currently exploring thermal infrared Earth observation and welcoming thoughtful research collaborations.</p><a href={pageHref('contact')}>Let's talk <span aria-hidden="true">↗</span></a></div></div></section>;
 }
 
 function About() {
@@ -94,29 +69,9 @@ function Contact() {
     try { await navigator.clipboard.writeText(email); setCopied(true); window.setTimeout(() => setCopied(false), 2500); }
     catch { setCopied(false); }
   }
-  return <section className="contact-section section-dark" id="contact" aria-labelledby="contact-heading"><div className="container contact-grid"><div><p className="section-kicker"><span className="index-bubble">05</span> WHAT'S NEXT?</p><h2 id="contact-heading">Let's make<br /><em>something matter.</em></h2><p>Open to meaningful research collaborations, internship opportunities, and conversations about ideas worth pursuing.</p></div><div className="contact-action"><span className="contact-small">HAVE A QUESTION OR AN IDEA?</span><a className="email-link" href={'mailto:' + email}>Say hello <span aria-hidden="true">↗</span></a><button className="copy-email" type="button" onClick={copy}>{email} <span aria-live="polite">{copied ? 'Copied ✓' : 'Copy email ↗'}</span></button><div className="contact-socials"><a href="https://github.com/1sazzad" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/m-sazzad-h/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div></div></div></section>;
-}
-
-function SiteFooter({ page }) {
-  return <footer className="global-footer section-dark"><div className="site-footer container"><span>© {new Date().getFullYear()} Md Sazzad Hossain</span><span>MADE WITH CURIOSITY <span className="asterisk">✳</span></span><a href={pageHref(page)} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top ↑</a></div></footer>;
-}
-
-function CurrentPage({ page }) {
-  if (page === 'home') return <><Hero /><Marquee /><HomeOverview /></>;
-  return <><PageIntroduction page={page} />{page === 'about' && <About />}{page === 'research' && <Research />}{page === 'journey' && <Journey />}{page === 'gallery' && <Gallery />}{page === 'contact' && <Contact />}</>;
+  return <section className="contact-section section-dark" id="contact" aria-labelledby="contact-heading"><div className="container contact-grid"><div><p className="section-kicker"><span className="index-bubble">05</span> WHAT'S NEXT?</p><h2 id="contact-heading">Let's make<br /><em>something matter.</em></h2><p>Open to meaningful research collaborations, internship opportunities, and conversations about ideas worth pursuing.</p></div><div className="contact-action"><span className="contact-small">HAVE A QUESTION OR AN IDEA?</span><a className="email-link" href={'mailto:' + email}>Say hello <span aria-hidden="true">↗</span></a><button className="copy-email" type="button" onClick={copy}>{email} <span aria-live="polite">{copied ? 'Copied ✓' : 'Copy email ↗'}</span></button><div className="contact-socials"><a href="https://github.com/1sazzad" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/m-sazzad-h/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div></div></div><footer className="site-footer container"><span>© {new Date().getFullYear()} Md Sazzad Hossain</span><span>MADE WITH CURIOSITY <span className="asterisk">✳</span></span><a href="#top">Back to top ↑</a></footer></section>;
 }
 
 export default function App() {
-  const [page, setPage] = useState(() => pageFromHash(window.location.hash));
-  useEffect(() => {
-    const onNavigation = () => setPage(pageFromHash(window.location.hash));
-    window.addEventListener('hashchange', onNavigation);
-    return () => window.removeEventListener('hashchange', onNavigation);
-  }, []);
-  useEffect(() => {
-    const current = pages.find((item) => item.id === page);
-    document.title = `Md Sazzad Hossain — ${current?.title || 'Home'}`;
-    window.scrollTo(0, 0);
-  }, [page]);
-  return <><ScrollProgress key={page} /><a className="skip-link" href="#main" onClick={(event) => { event.preventDefault(); document.getElementById('main')?.focus(); }}>Skip to content</a><Navigation page={page} /><main id="main" key={page} tabIndex="-1"><CurrentPage page={page} /></main><SiteFooter page={page} /></>;
+  return <><ScrollProgress /><a className="skip-link" href="#main">Skip to content</a><Navigation /><main id="main"><Hero /><Marquee /><About /><Research /><Journey /><Gallery /><Contact /></main></>;
 }

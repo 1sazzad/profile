@@ -4,12 +4,6 @@
 
 The React/Vite project runs from the repository root, with source code in [`src/`](src/). It includes interactive research filters, expandable project notes, a responsive gallery, photo carousels for research and achievement cards, and a full-screen photo viewer.
 
-### Pages and navigation
-
-The site has six separate views available from the desktop or mobile menu: **Home**, **About**, **Research**, **Journey**, **Gallery**, and **Contact**. The homepage introduces the portfolio and provides links into these dedicated pages.
-
-Each page has its own shareable address using hash-based routing: `#/`, `#/about`, `#/research`, `#/journey`, `#/gallery`, and `#/contact`. For example, on GitHub Pages the research address is `https://1sazzad.github.io/profile/#/research`. This keeps refresh, direct links, and browser Back/Forward working on both GitHub Pages and Vercel without server rewrites.
-
 The React app is the main site, deployed with GitHub Actions.
 
 ### Add your photographs (no code editing)
