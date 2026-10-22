@@ -1,5 +1,59 @@
 # Md Sazzad Hossain — Personal research portfolio
 
+## React portfolio (version 2)
+
+The new React/Vite source is in [`app/`](app/). It adds interactive research filters, expandable project notes, achievement photo slots, a photo archive with category filters, a keyboard-friendly full-screen viewer, and responsive layouts.
+
+**The original root `index.html` is retained as a working fallback** until you switch GitHub Pages to the React deployment.
+
+### Add your photographs (no code editing)
+
+Create or open the folder `app/src/assets/photos/` and drop your images there. Use one of the filenames below (any `.jpg`, `.jpeg`, `.png`, `.webp`, or `.avif` extension). The build finds the files automatically and replaces the corresponding photo placeholders.
+
+| Place on website | Photo filename (without extension) |
+| --- | --- |
+| Homepage portrait | `portrait` |
+| Underwater research | `research-underwater` |
+| Model reliability research | `research-reliability` |
+| Thermal IR research | `research-thermal` |
+| Research poster/talk | `research-presentation` |
+| ICPC regional contest | `icpc-regional` |
+| MumbaiHacks invitation | `mumbai-hacks` |
+| National Innovation Fair | `innovation-fair` |
+| Club leadership | `club-leadership` |
+| Teaching foundation course | `teaching-foundation` |
+| Community/campus | `campus-community` |
+| Programming Combat award | `programming-combat` |
+| Battle of Brains award | `battle-of-brains` |
+| Poster presentation award | `poster-champion` |
+| General awards | `awards-moment` |
+
+You can add additional photographs with other descriptive names too; they will appear in the gallery automatically. Prefix extra files with `research-`, `award-`, `club-`, or `teaching-` to assign a category automatically; other names default to Events.
+
+Please use only images you have permission to publish. In particular, **an invitation should not be illustrated as physical attendance** unless you actually participated. Prefer compressed WebP or JPEG images (ideally under 400 KB each) for fast loading.
+
+### Develop locally
+
+```sh
+cd app
+npm install
+npm run dev
+```
+
+Build for GitHub Pages with `npm run build`. The configuration includes `base: '/profile/'` so assets resolve at `https://1sazzad.github.io/profile/`.
+
+### Activate the React version on GitHub Pages
+
+1. In your repository, open **Settings → Pages**.
+2. Under **Build and deployment → Source**, change **Deploy from a branch** to **GitHub Actions**.
+3. Open the repository **Actions** tab and run **Build and deploy React portfolio** using **Run workflow**. Future commits that modify the React app or add photos deploy automatically.
+
+The workflow at `.github/workflows/deploy-react.yml` installs, builds, and publishes the React app. Until you change the source setting, the existing root site remains available.
+
+---
+
+## Original static portfolio (version 1)
+
 A responsive, single-page personal website built with HTML, CSS, and JavaScript. No build step or dependencies are required. It is designed for GitHub Pages and works at a repository subpath such as `https://1sazzad.github.io/profile/`.
 
 ## Sections

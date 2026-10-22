@@ -1,0 +1,74 @@
+export const researchProjects = [
+  {
+    id: 'underwater',
+    number: '01',
+    category: 'vision',
+    categoryLabel: 'Computer vision',
+    title: 'Learning to recognize life beneath the surface',
+    summary: 'Marine species classification in difficult underwater imagery, with attention to rare classes and robust evaluation.',
+    question: 'How can a vision system recognize rare marine species without being dominated by common classes?',
+    approach: ['Controlled dataset splits', 'Class-imbalance-aware learning', 'Probability-based model ensembles'],
+    tags: ['AQUA20', 'Deep learning', 'Class imbalance'],
+    image: 'research-underwater',
+    status: 'Conference research',
+  },
+  {
+    id: 'reliability',
+    number: '02',
+    category: 'vision',
+    categoryLabel: 'Model reliability',
+    title: 'Knowing when a model should ask for help',
+    summary: 'Investigating model routing, prediction agreement, and selective referral in visual classification.',
+    question: 'When should an ensemble make a decision, and when is disagreement a reason to refer?',
+    approach: ['Controlled flat versus routed comparisons', 'Consensus and disagreement scoring', 'Coverage and error trade-off analysis'],
+    tags: ['Evaluation', 'Ensembles', 'Selective referral'],
+    image: 'research-reliability',
+    status: 'Research project',
+  },
+  {
+    id: 'thermal',
+    number: '03',
+    category: 'earth',
+    categoryLabel: 'Earth observation',
+    title: 'Reading our planet through thermal infrared',
+    summary: 'An emerging research direction in satellite temperature mapping and spatiotemporal learning.',
+    question: 'How can satellite thermal observations be made more complete and reliable across space and time?',
+    approach: ['Thermal infrared satellite data', 'Land surface temperature reconstruction', 'Multisensor and temporal modeling'],
+    tags: ['Thermal IR', 'Remote sensing', 'Satellite data'],
+    image: 'research-thermal',
+    status: 'Exploring now',
+  },
+];
+
+export const publications = [
+  { venue: 'AII 2026', year: '2026', subject: 'Underwater visual recognition research', status: 'Accepted' },
+  { venue: 'ITT 2026', year: '2026', subject: 'Consensus and selective referral in classification', status: 'Accepted' },
+  { venue: 'CoMeSySo 2026', year: '2026', subject: 'Probability-preserving inference in hard-routed classification', status: 'Accepted' },
+  { venue: 'TIDGN — Research Square', year: '2026', subject: 'Topology Invariant Dynamic Graph Networks · preprint', status: 'Preprint' },
+];
+
+export const milestones = [
+  { year: '2025–2026', heading: 'President, Programming Club of IST', body: 'Leading technical sessions, programming contests, workshops, and peer-learning activities.', photo: 'club-leadership', category: 'community' },
+  { year: 'Teaching', heading: 'Data Science & AI foundation instructor', body: 'Teaching fundamental data science and artificial intelligence through the Programming Club of IST.', photo: 'teaching-foundation', category: 'community' },
+  { year: 'Two editions', heading: 'ICPC Dhaka Regional participant', body: 'Competing in algorithmic programming and collaborative problem-solving.', photo: 'icpc-regional', category: 'events' },
+  { year: 'Recognition', heading: 'Competitive programming & presentation awards', body: 'Programming Combat 2022 champion, Battle of Brains 2024 second runner-up, and a poster presentation championship.', photo: 'awards-moment', category: 'awards' },
+];
+
+// Rename files to these stems to fill matching slots automatically.
+// Extensions .jpg, .jpeg, .png, .webp and .avif are supported.
+export const photoSlots = [
+  { stem: 'research-presentation', category: 'research', title: 'Research presentation', hint: 'A poster, talk, or academic presentation', size: 'wide' },
+  { stem: 'research-underwater', category: 'research', title: 'Underwater research', hint: 'Work on marine imagery and visual recognition', size: 'narrow' },
+  { stem: 'research-reliability', category: 'research', title: 'Model reliability research', hint: 'Experiments, presentations, or research setup' },
+  { stem: 'research-thermal', category: 'research', title: 'Thermal infrared exploration', hint: 'Satellite or thermal research activity' },
+  { stem: 'icpc-regional', category: 'events', title: 'ICPC Dhaka Regional', hint: 'Team or contest-day photograph', size: 'wide' },
+  { stem: 'mumbai-hacks', category: 'events', title: 'MumbaiHacks invitation', hint: 'Use an invitation graphic unless you attended', size: 'narrow' },
+  { stem: 'innovation-fair', category: 'events', title: 'National Innovation Fair', hint: 'Invitation or participation evidence' },
+  { stem: 'club-leadership', category: 'community', title: 'Leading PcIST', hint: 'Club activity or leadership moment', size: 'wide' },
+  { stem: 'teaching-foundation', category: 'community', title: 'Teaching Data Science & AI', hint: 'A class or workshop moment', size: 'narrow' },
+  { stem: 'campus-community', category: 'community', title: 'Community & campus', hint: 'Events with peers, mentors, or club members' },
+  { stem: 'programming-combat', category: 'awards', title: 'Programming Combat champion', hint: '2022 competition achievement', size: 'wide' },
+  { stem: 'battle-of-brains', category: 'awards', title: 'Battle of Brains', hint: '2024 second runner-up', size: 'narrow' },
+  { stem: 'poster-champion', category: 'awards', title: 'Poster presentation champion', hint: 'Freshers’ Reception poster award' },
+  { stem: 'awards-moment', category: 'awards', title: 'Recognition & awards', hint: 'Certificate, trophy, or award ceremony' },
+];
