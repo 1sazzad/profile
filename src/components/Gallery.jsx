@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { galleryItems, photosAdded } from '../gallery.js';
+import { galleryItems, photosAdded, topicsFilled } from '../gallery.js';
 
 const filters = [
   { key: 'all', label: 'All moments' },
@@ -15,12 +15,11 @@ export default function Gallery() {
   const closeRef = useRef(null);
   const previousFocus = useRef(null);
   const filtered = galleryItems.filter((item) => filter === 'all' || item.category === filter);
-  const filled = filtered.filter((item) => item.url);
-  const selectedIndex = selected ? filled.findIndex((item) => item.stem === selected.stem) : -1;
+  const selectedPhoto = selected?.item.photos[selected.index];
 
   function open(item) {
     previousFocus.current = document.activeElement;
-    setSelected(item);
+    setSelected({ item, index: 0 });
   }
 
   function close() {
@@ -29,8 +28,10 @@ export default function Gallery() {
   }
 
   function move(direction) {
-    if (filled.length < 2 || selectedIndex < 0) return;
-    setSelected(filled[(selectedIndex + direction + filled.length) % filled.length]);
+    setSelected((current) => {
+      if (!current || current.item.photos.length < 2) return current;
+      return { ...current, index: (current.index + direction + current.item.photos.length) % current.item.photos.length };
+    });
   }
 
   useEffect(() => {
@@ -53,24 +54,24 @@ export default function Gallery() {
     }
     document.addEventListener('keydown', keyHandler);
     return () => { document.body.style.overflow = former; document.removeEventListener('keydown', keyHandler); };
-  }, [selected, selectedIndex, filled.length]);
+  }, [selected]);
 
   return (
     <section className="section gallery-section" id="gallery" aria-labelledby="gallery-heading">
       <div className="container">
         <div className="section-top"><div><p className="section-kicker"><span className="index-bubble">04</span> A VISUAL JOURNAL</p><h2 id="gallery-heading">Moments beyond<br /><em>the milestones.</em></h2></div><p className="section-intro">Your photographs will automatically fill these curated spaces. Filter the archive, and open any added image to explore.</p></div>
-        <div className="gallery-progress"><div><strong>{photosAdded}</strong><span> of {galleryItems.length} photo spaces filled</span></div><div className="gallery-progress-track"><span style={{ width: (photosAdded / Math.max(galleryItems.length, 1) * 100) + '%' }} /></div><p>Drop photos into <code>src/assets/photos/</code>, commit and push to update the gallery.</p></div>
-        <div className="gallery-toolbar"><div className="gallery-filters" aria-label="Photo categories">{filters.map((item) => <button key={item.key} type="button" className={'filter-button ' + (filter === item.key ? 'active' : '')} aria-pressed={filter === item.key} onClick={() => setFilter(item.key)}>{item.label}</button>)}</div><span className="gallery-count">{filtered.length} SLOTS · {filled.length} FILLED</span></div>
+        <div className="gallery-progress"><div><strong>{photosAdded}</strong><span> photos across {topicsFilled} of {galleryItems.length} topics</span></div><div className="gallery-progress-track"><span style={{ width: (topicsFilled / Math.max(galleryItems.length, 1) * 100) + '%' }} /></div><p>Give each topic more slides with numbered files such as <code>club-leadership-02.jpg</code>.</p></div>
+        <div className="gallery-toolbar"><div className="gallery-filters" aria-label="Photo categories">{filters.map((item) => <button key={item.key} type="button" className={'filter-button ' + (filter === item.key ? 'active' : '')} aria-pressed={filter === item.key} onClick={() => setFilter(item.key)}>{item.label}</button>)}</div><span className="gallery-count">{filtered.length} TOPICS · {filtered.reduce((count, item) => count + item.photos.length, 0)} PHOTOS</span></div>
         <div className="gallery-grid react-gallery-grid">
           {filtered.map((item, index) => {
             const className = 'react-gallery-card ' + (item.size || '') + ' color-' + item.category;
-            return item.url ? <button key={item.stem} type="button" className={className + ' populated'} onClick={() => open(item)} aria-label={'Open ' + item.title}><img src={item.url} alt={item.title} loading="lazy" /><span className="react-gallery-caption"><small>{item.category} / {String(index + 1).padStart(2, '0')}</small><strong>{item.title}</strong><span aria-hidden="true">↗</span></span></button> :
-              <article key={item.stem} className={className + ' empty'}><div className="gallery-placeholder-pattern" aria-hidden="true">✳</div><div className="gallery-card-top"><span>{item.category} / {String(index + 1).padStart(2, '0')}</span><span>+ PHOTO</span></div><div className="gallery-card-bottom"><h3>{item.title}</h3><p>{item.hint}</p><code>{item.stem}.jpg</code></div></article>;
+            return item.url ? <button key={item.stem} type="button" className={className + ' populated'} onClick={() => open(item)} aria-label={'Open ' + item.title + ' photo collection'}><img src={item.url} alt={item.title} loading="lazy" />{item.photos.length > 1 && <span className="gallery-slide-count">{item.photos.length} PHOTOS</span>}<span className="react-gallery-caption"><small>{item.category} / {String(index + 1).padStart(2, '0')}</small><strong>{item.title}</strong><span aria-hidden="true">↗</span></span></button> :
+              <article key={item.stem} className={className + ' empty'}><div className="gallery-placeholder-pattern" aria-hidden="true">✳</div><div className="gallery-card-top"><span>{item.category} / {String(index + 1).padStart(2, '0')}</span><span>+ PHOTOS</span></div><div className="gallery-card-bottom"><h3>{item.title}</h3><p>{item.hint}</p><code>{item.stem}.jpg</code><code>{item.stem}-02.jpg</code></div></article>;
           })}
         </div>
-        <p className="gallery-footnote">You can also add photos with any other filename. Additional images appear automatically in the gallery, with categories inferred from their filenames.</p>
+        <p className="gallery-footnote">Each topic becomes a slideshow when you add two or more matching files. Unmatched extra images also appear automatically in the gallery.</p>
       </div>
-      {selected && <div className="react-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}><div className="react-lightbox-content"><button ref={closeRef} type="button" className="react-lightbox-close" aria-label="Close photo" onClick={close}>✕</button><img src={selected.url} alt={selected.title} /><div className="react-lightbox-bottom"><div><small>{selected.category.toUpperCase()}</small><strong>{selected.title}</strong></div><div className="lightbox-controls"><button type="button" aria-label="Previous photo" disabled={filled.length < 2} onClick={() => move(-1)}>←</button><span>{selectedIndex + 1} / {filled.length}</span><button type="button" aria-label="Next photo" disabled={filled.length < 2} onClick={() => move(1)}>→</button></div></div></div></div>}
+      {selected && <div className="react-lightbox" role="dialog" aria-modal="true" aria-label={selected.item.title + ' photo slideshow'} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}><div className="react-lightbox-content"><button ref={closeRef} type="button" className="react-lightbox-close" aria-label="Close photo" onClick={close}>✕</button><img src={selectedPhoto.url} alt={selected.item.title + ', photo ' + (selected.index + 1)} /><div className="react-lightbox-bottom"><div><small>{selected.item.category.toUpperCase()}</small><strong>{selected.item.title}</strong></div><div className="lightbox-controls"><button type="button" aria-label="Previous photo" disabled={selected.item.photos.length < 2} onClick={() => move(-1)}>←</button><span>{selected.index + 1} / {selected.item.photos.length}</span><button type="button" aria-label="Next photo" disabled={selected.item.photos.length < 2} onClick={() => move(1)}>→</button></div></div></div></div>}
     </section>
   );
 }

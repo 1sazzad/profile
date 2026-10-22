@@ -1,8 +1,8 @@
 import React from 'react';
 import { photoUrl } from '../gallery.js';
 
-export default function PhotoSlot({ stem, title, className = '', alt = '', children, showHint = true }) {
-  const image = photoUrl(stem);
+export default function PhotoSlot({ stem, src, title, className = '', alt = '', children, showHint = true }) {
+  const image = src || photoUrl(stem);
   return (
     <div className={'react-photo-slot ' + (image ? 'has-photo ' : 'is-placeholder ') + className}>
       {image ? <img src={image} alt={alt || title} loading={stem === 'portrait' ? 'eager' : 'lazy'} /> : (
