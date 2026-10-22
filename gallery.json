@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "src": "assets/photos/icpc-dhaka-2025.jpg",
+    "title": "At the ICPC Dhaka Regional",
+    "category": "events",
+    "caption": "Dhaka, Bangladesh · 2025",
+    "alt": "Md Sazzad Hossain with teammates at a programming contest",
+    "size": "wide"
+  },
+  {
+    "src": "assets/photos/research-poster.jpg",
+    "title": "Presenting research",
+    "category": "research",
+    "caption": "Research presentation",
+    "alt": "Research presentation photo",
+    "size": "narrow"
+  }
+]

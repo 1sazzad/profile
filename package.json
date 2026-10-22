@@ -1,11 +1,19 @@
 {
-  "name": "sazzad-profile",
+  "name": "sazzad-research-portfolio",
   "private": true,
   "version": "2.0.0",
+  "type": "module",
   "scripts": {
-    "postinstall": "npm --prefix app install",
-    "dev": "npm --prefix app run dev",
-    "build": "npm --prefix app run build",
-    "preview": "npm --prefix app run preview"
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.0",
+    "vite": "^7.2.0"
   }
 }
