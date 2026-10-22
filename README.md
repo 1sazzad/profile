@@ -34,11 +34,14 @@ Please use only images you have permission to publish. In particular, **an invit
 
 ### Develop locally
 
+Run these commands from the repository root (`E:\sazzad\Profile`):
+
 ```sh
-cd app
 npm install
 npm run dev
 ```
+
+The root npm commands install and run the React project in `app/`. You do not need to change into that folder.
 
 Build for GitHub Pages with `npm run build`. The configuration includes `base: '/profile/'` so assets resolve at `https://1sazzad.github.io/profile/`.
 
