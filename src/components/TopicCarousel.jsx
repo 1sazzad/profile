@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { photosForTopic } from '../gallery.js';
+import { folderForTopic, photosForTopic } from '../gallery.js';
 import PhotoSlot from './PhotoSlot.jsx';
 
 export default function TopicCarousel({ stem, title, className = '' }) {
   const slides = photosForTopic(stem);
+  const folder = folderForTopic(stem);
   const [index, setIndex] = useState(0);
   const swipeStart = useRef(null);
   const total = slides.length;
@@ -41,7 +42,7 @@ export default function TopicCarousel({ stem, title, className = '' }) {
           {slides.map((slide, slideIndex) => <button key={slide.path} type="button" className={slideIndex === index ? 'active' : ''} aria-label={'Show photo ' + (slideIndex + 1) + ' of ' + total} aria-current={slideIndex === index ? 'true' : undefined} onClick={() => setIndex(slideIndex)} />)}
         </div>
       </>}
-      {total === 0 && <div className="topic-carousel-add">Use <code>{stem}-02.jpg</code> or <code>{stem}/01.jpg</code></div>}
+      {total === 0 && <div className="topic-carousel-add">Add <code>{folder}/1.jpg</code>, <code>2.jpg</code>, <code>3.jpg</code>…</div>}
     </div>
   );
 }

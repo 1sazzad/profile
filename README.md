@@ -10,55 +10,50 @@ The React app is the main site, deployed with GitHub Actions.
 
 Put photos in **`src/assets/photos/`**. Supported extensions: `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif` (uppercase extensions also work). The build discovers them automatically.
 
-| Place on website | Photo filename or folder name |
+| Place on website | Folder inside `src/assets/photos/` |
 | --- | --- |
-| Homepage portrait | `portrait` |
-| Underwater research | `research-underwater` |
-| Model reliability research | `research-reliability` |
-| Thermal IR research | `research-thermal` |
-| Research poster/talk | `research-presentation` |
-| ICPC regional contest | `icpc-regional` |
-| MumbaiHacks invitation | `mumbai-hacks` |
-| National Innovation Fair | `innovation-fair` |
-| Club leadership | `club-leadership` |
-| Teaching foundation course | `teaching-foundation` |
-| Community/campus | `campus-community` |
-| Programming Combat award | `programming-combat` |
-| Battle of Brains award | `battle-of-brains` |
-| Poster presentation award | `poster-champion` |
-| General awards | `awards-moment` |
+| Homepage portrait | `portrait.jpg` (top-level image, not a folder) |
+| Underwater research | `underwater/` |
+| Model reliability research | `model-reliability/` |
+| Thermal IR research | `thermal-ir/` |
+| Research poster/talk | `research-presentation/` |
+| ICPC regional contest | `icpc/` |
+| MumbaiHacks invitation | `mumbai-hacks/` |
+| National Innovation Fair | `innovation-fair/` |
+| Club leadership | `club/` |
+| Teaching foundation course | `teaching/` |
+| Community/campus | `campus/` |
+| Programming Combat award | `programming-combat/` |
+| Battle of Brains award | `battle-of-brains/` |
+| Poster presentation award | `poster-champion/` |
+| General awards | `awards/` |
 
 ### Multiple photos for a single topic
 
-For a Programming Club card with multiple images, choose **either or both** of these arrangements:
-
-**A. Same prefix in the main photo folder**
+Each event already has its own folder. Simply upload photos with consecutive numbers:
 
 ```text
 src/assets/photos/
-├── club-leadership.JPG        # cover image (already uploaded)
-├── club-leadership-02.jpg
-├── club-leadership-03.webp
-└── club-leadership-workshop.jpg
+├── club-leadership.JPG        # your existing photo is preserved
+├── icpc-dhaka-2023.JPG        # your existing photo is preserved
+├── club/
+│   ├── 1.jpg
+│   ├── 2.jpg
+│   └── 3.webp
+├── icpc/
+│   ├── 1.jpg
+│   ├── 2.jpg
+│   └── 3.jpg
+└── teaching/
+    ├── 1.jpg
+    └── 2.jpg
 ```
 
-**B. A dedicated subfolder for the topic**
+**Uploading on GitHub:** Open the desired folder, choose **Add file → Upload files**, select your local `1.jpg`, `2.jpg`, `3.jpg` files, and commit. The `.gitkeep` files only make the empty folders visible in GitHub.
 
-```text
-src/assets/photos/
-├── club-leadership.JPG        # optional cover image
-├── club-leadership/
-│   ├── 01.jpg
-│   ├── 02.jpg
-│   └── 03.webp
-└── icpc-regional/
-    ├── 01.jpg
-    └── 02.jpg
-```
+Your original top-level photos and older naming pattern are still supported. Their images join the matching event collection automatically. New photos display in natural numeric order (`1, 2, 3, …, 10`), with carousel arrows, dots, keyboard arrows and mobile swipe. A single photo displays normally.
 
-The unnumbered top-level file becomes the cover, followed by naturally ordered additional slides. Visitors can use previous/next arrows, slide dots, keyboard arrow keys, and swipe gestures on mobile. The Gallery shows one collection per topic; opening it provides a full-screen slideshow with its own arrows. A single photo appears normally without controls.
-
-Apply the same naming pattern to any topic in the table above. No React or JSON edits are required. Other photos with distinct names appear in the Gallery as separate moments. Photos not matching a known topic are categorized by filename (`research-`, `award-`, `club-`, or `teaching-`), otherwise they appear under Events.
+**Adding a new event:** Create another folder such as `robotics-contest/` and put `1.jpg`, `2.jpg` inside. The Gallery will automatically group those images into one new album. No React or JSON editing is needed.
 
 Only use photographs you have permission to publish. An invitation should not be illustrated as attendance unless you actually participated. For faster loading, prefer compressed JPEG or WebP images (ideally under 400 KB each).
 
@@ -73,7 +68,7 @@ npm test
 npm run build
 ```
 
-Vite is configured with `base: '/profile/'` for `https://1sazzad.github.io/profile/`.
+Vite uses relative asset paths (`base: './'`) so the site works on GitHub Pages at `https://1sazzad.github.io/profile/` and on Vercel.
 
 ### GitHub Pages deployment
 

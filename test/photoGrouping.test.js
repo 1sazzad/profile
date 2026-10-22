@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { photosForStem } from '../src/photoGrouping.js';
+import { photoSlots } from '../src/data.js';
 
 test('groups many slides under one topic and keeps the cover first', () => {
   const entries = [
@@ -41,4 +42,40 @@ test('supports numbered images inside a topic subfolder', () => {
     'photos/club-leadership/02.jpg',
     'photos/club-leadership/10.jpg',
   ]);
+});
+
+test('friendly event folders accept images 1, 2, 10 in natural order', () => {
+  const entries = [
+    { path: 'photos/club/10.jpg', group: 'club', stem: '10' },
+    { path: 'photos/club/2.jpg', group: 'club', stem: '2' },
+    { path: 'photos/club-leadership.JPG', group: null, stem: 'club-leadership' },
+    { path: 'photos/club/1.jpg', group: 'club', stem: '1' },
+    { path: 'photos/icpc/1.jpg', group: 'icpc', stem: '1' },
+  ];
+  assert.deepEqual(photosForStem(entries, 'club-leadership', 'club').map((entry) => entry.path), [
+    'photos/club-leadership.JPG',
+    'photos/club/1.jpg',
+    'photos/club/2.jpg',
+    'photos/club/10.jpg',
+  ]);
+});
+
+test('legacy ICPC images also join the new ICPC album', () => {
+  const entries = [
+    { path: 'photos/icpc-dhaka-2023.JPG', group: null, stem: 'icpc-dhaka-2023' },
+    { path: 'photos/icpc/2.jpg', group: 'icpc', stem: '2' },
+    { path: 'photos/icpc/1.jpg', group: 'icpc', stem: '1' },
+    { path: 'photos/icpcs-notrelated.jpg', group: null, stem: 'icpcs-notrelated' },
+  ];
+  assert.deepEqual(photosForStem(entries, 'icpc-regional', 'icpc').map((entry) => entry.path), [
+    'photos/icpc/1.jpg',
+    'photos/icpc/2.jpg',
+    'photos/icpc-dhaka-2023.JPG',
+  ]);
+});
+
+test('every curated gallery topic has its own unique photo folder', () => {
+  const folders = photoSlots.map((item) => item.folder);
+  assert.equal(new Set(folders).size, photoSlots.length);
+  assert.ok(folders.every((folder) => /^[a-z0-9-]+$/.test(folder)));
 });

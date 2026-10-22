@@ -17,15 +17,20 @@ const entries = Object.entries(files).map(([path, url]) => {
 });
 
 const assetByStem = new Map(entries.filter((entry) => !entry.group).map((entry) => [entry.stem, entry.url]));
+const slotByStem = new Map(photoSlots.map((item) => [item.stem, item]));
 
 export function photoUrl(stem) {
   return assetByStem.get(stem.toLowerCase()) || photosForTopic(stem)[0]?.url || null;
 }
 
-// Supports a flat folder with shared filename prefixes or a named subfolder
-// such as photos/club-leadership/01.jpg.
+// Each known topic has a friendly folder, such as photos/club/1.jpg.
+// Older files and topic-named subfolders continue to work.
+export function folderForTopic(stem) {
+  return slotByStem.get(stem)?.folder || stem;
+}
+
 export function photosForTopic(stem) {
-  return photosForStem(entries, stem);
+  return photosForStem(entries, stem, folderForTopic(stem));
 }
 
 function humanTitle(stem) {
@@ -43,15 +48,24 @@ function categoryFromName(stem) {
 const slotPhotos = photoSlots.map((item) => ({ ...item, photos: photosForTopic(item.stem) }));
 const knownPaths = new Set([...slotPhotos.flatMap((item) => item.photos.map((photo) => photo.path)), ...photosForTopic('portrait').map((photo) => photo.path)]);
 
+// Any new event folder automatically becomes one gallery collection.
+const extraGroups = new Map();
+for (const entry of entries.filter((item) => !knownPaths.has(item.path))) {
+  const key = entry.group || entry.stem;
+  if (!extraGroups.has(key)) extraGroups.set(key, []);
+  extraGroups.get(key).push(entry);
+}
+const naturalOrder = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+
 export const galleryItems = [
   ...slotPhotos.map((item) => ({ ...item, url: item.photos[0]?.url || null })),
-  ...entries.filter((entry) => !knownPaths.has(entry.path)).map((entry) => ({
-    stem: entry.group ? entry.group + '/' + entry.stem : entry.stem,
-    category: categoryFromName(entry.group || entry.stem),
-    title: humanTitle(entry.group ? entry.group + '-' + entry.stem : entry.stem),
+  ...Array.from(extraGroups, ([stem, photos]) => ({
+    stem,
+    category: categoryFromName(stem),
+    title: humanTitle(stem),
     hint: 'An extra moment from your photo archive',
-    url: entry.url,
-    photos: [entry],
+    url: photos.sort((a, b) => naturalOrder.compare(a.stem, b.stem))[0]?.url || null,
+    photos,
   })),
 ];
 
