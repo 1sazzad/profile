@@ -33,11 +33,11 @@ export function photoUrl(stem) {
 
 // Each known topic has a friendly folder, such as photos/club/1.jpg.
 // Older files and topic-named subfolders continue to work.
-export function folderForTopic(stem) {
+function folderForTopic(stem) {
   return slotByStem.get(stem)?.folder || stem;
 }
 
-export function photosForTopic(stem) {
+function photosForTopic(stem) {
   return photosForStem(entries, stem, folderForTopic(stem));
 }
 
@@ -66,16 +66,12 @@ for (const entry of entries.filter((item) => !knownPaths.has(item.path))) {
 const naturalOrder = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 
 export const galleryItems = [
-  ...slotPhotos.map((item) => ({ ...item, url: item.photos[0]?.url || null })),
+  ...slotPhotos,
   ...Array.from(extraGroups, ([stem, photos]) => ({
     stem,
     category: categoryFromName(stem),
     title: humanTitle(stem),
     hint: 'An extra moment from your photo archive',
-    url: photos.sort((a, b) => naturalOrder.compare(a.stem, b.stem))[0]?.url || null,
-    photos,
+    photos: photos.sort((a, b) => naturalOrder.compare(a.stem, b.stem)),
   })),
 ];
-
-export const photosAdded = galleryItems.reduce((total, item) => total + item.photos.length, 0);
-export const topicsFilled = galleryItems.filter((item) => item.photos.length > 0).length;

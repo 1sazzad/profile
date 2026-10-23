@@ -97,7 +97,7 @@ Vite uses relative asset paths (`base: './'`) so the site works on GitHub Pages 
 2. The workflow at `.github/workflows/deploy-react.yml` builds and publishes the site when React source files, photos, or package files change on `main`.
 3. The built output is deployed from `dist/`.
 
-The existing `gallery.json` is retained as legacy metadata. The current React gallery reads the real images in `src/assets/photos/` automatically.
+The gallery discovers images directly from event folders; no JSON manifest is required. Deployment runs the photo utility tests before building.
 
 ## License
 

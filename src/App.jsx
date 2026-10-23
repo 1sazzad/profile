@@ -53,7 +53,7 @@ function Introduction() {
         </div>
       </div>
       <figure className="profile-portrait">
-        <img src={portrait} alt="Portrait of Md Sazzad Hossain" />
+        <img src={portrait} alt="Portrait of Md Sazzad Hossain" width="190" height="238" />
       </figure>
     </section>
   );

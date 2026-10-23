@@ -13,20 +13,17 @@ const categories = [
 export default function Gallery() {
   const [filter, setFilter] = useState('all');
   const [selected, setSelected] = useState(null);
-  const closeRef = useRef(null);
-  const previousFocus = useRef(null);
+  const dialogRef = useRef(null);
   const populated = galleryItems.filter((item) => item.photos.length > 0);
   const filtered = populated.filter((item) => filter === 'all' || item.category === filter);
   const selectedPhoto = selected?.item.photos[selected.index];
 
   function open(item) {
-    previousFocus.current = document.activeElement;
     setSelected({ item, index: 0 });
   }
 
   function close() {
     setSelected(null);
-    requestAnimationFrame(() => previousFocus.current?.focus());
   }
 
   function move(direction) {
@@ -36,30 +33,29 @@ export default function Gallery() {
     });
   }
 
+  const isOpen = selected !== null;
   useEffect(() => {
-    if (!selected) return;
+    if (!isOpen) return;
+    const dialog = dialogRef.current;
     const former = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    closeRef.current?.focus();
-    function onKeyDown(event) {
-      if (event.key === 'Escape') close();
-      if (event.key === 'ArrowLeft') move(-1);
-      if (event.key === 'ArrowRight') move(1);
-      if (event.key === 'Tab') {
-        const buttons = [...document.querySelectorAll('.photo-dialog button:not(:disabled)')];
-        const first = buttons[0];
-        const last = buttons.at(-1);
-        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-      }
+    dialog.showModal();
+    return () => {
+      dialog.close();
+      document.body.style.overflow = former;
+    };
+  }, [isOpen]);
+
+  function onDialogKeyDown(event) {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      move(event.key === 'ArrowLeft' ? -1 : 1);
     }
-    document.addEventListener('keydown', onKeyDown);
-    return () => { document.body.style.overflow = former; document.removeEventListener('keydown', onKeyDown); };
-  }, [selected]);
+  }
 
   return (
     <section className="content-section gallery-section" id="gallery" aria-labelledby="gallery-title">
-      <h2 id="gallery-title">Selected photographs</h2>
+      <h2 id="gallery-title">Photographs</h2>
       <p className="section-lead">Research presentations, competitions, and activities with the Programming Club of IST. Select an album to view its images and captions.</p>
       {populated.length ? <>
         <div className="photo-filters" role="group" aria-label="Filter photo albums">
@@ -70,7 +66,7 @@ export default function Gallery() {
         {filtered.length ? <div className="photo-grid">
           {filtered.map((item) => (
             <button type="button" className="album-card" key={item.stem} onClick={() => open(item)} aria-label={`Open ${item.title}, ${item.photos.length} ${item.photos.length === 1 ? 'photograph' : 'photographs'}`}>
-              <img src={item.photos[0].url} alt={item.photos[0].description || item.title} loading="lazy" />
+              <img src={item.photos[0].url} alt={item.photos[0].description || item.title} loading="lazy" width="400" height="300" />
               <span className="album-title">{item.title}</span>
               <span className="album-count">{item.photos.length} {item.photos.length === 1 ? 'photo' : 'photos'}</span>
               {item.photos[0].description && <span className="album-caption">{item.photos[0].description}</span>}
@@ -78,16 +74,16 @@ export default function Gallery() {
           ))}
         </div> : <p className="empty-note">No photographs in this category yet.</p>}
       </> : <p className="empty-note">Photographs will appear here when added to the event folders.</p>}
-      {selected && <div className="photo-dialog" role="dialog" aria-modal="true" aria-label={`${selected.item.title} photo album`} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
+      {selected && <dialog ref={dialogRef} className="photo-dialog" onCancel={close} onKeyDown={onDialogKeyDown} aria-label={`${selected.item.title} photo album`} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
         <div className="photo-dialog-content">
-          <div className="dialog-header"><strong>{selected.item.title}</strong><button ref={closeRef} type="button" aria-label="Close photograph" onClick={close}>Close ✕</button></div>
+          <div className="dialog-header"><strong>{selected.item.title}</strong><button autoFocus type="button" aria-label="Close photograph" onClick={close}>Close ✕</button></div>
           <ZoomablePhoto key={`${selected.item.stem}:${selected.index}`} src={selectedPhoto.url} alt={selectedPhoto.description || `${selected.item.title}, image ${selected.index + 1}`} />
           <div className="dialog-footer">
             <p aria-live="polite">{selectedPhoto.description || selected.item.hint}</p>
-            <div className="dialog-paging"><button type="button" disabled={selected.item.photos.length < 2} onClick={() => move(-1)} aria-label="Previous photo">←</button><span>{selected.index + 1} / {selected.item.photos.length}</span><button type="button" disabled={selected.item.photos.length < 2} onClick={() => move(1)} aria-label="Next photo">→</button></div>
+            <div className="dialog-paging"><button type="button" disabled={selected.item.photos.length < 2} onClick={() => move(-1)} aria-label="Previous photo">←</button><span aria-live="polite" aria-atomic="true">{selected.index + 1} / {selected.item.photos.length}</span><button type="button" disabled={selected.item.photos.length < 2} onClick={() => move(1)} aria-label="Next photo">→</button></div>
           </div>
         </div>
-      </div>}
+      </dialog>}
     </section>
   );
 }
