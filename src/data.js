@@ -29,10 +29,39 @@ export const researchProjects = [
 ];
 
 export const publications = [
-  { venue: 'AII 2026', year: '2026', subject: 'Underwater visual recognition research', status: 'Accepted' },
-  { venue: 'ITT 2026', year: '2026', subject: 'Consensus and selective referral in classification', status: 'Accepted' },
-  { venue: 'CoMeSySo 2026', year: '2026', subject: 'Probability-preserving inference in hard-routed classification', status: 'Accepted' },
-  { venue: 'TIDGN — Research Square', year: '2026', subject: 'Topology Invariant Dynamic Graph Networks · preprint', status: 'Preprint' },
+  {
+    id: 'aii-2026',
+    status: 'published',
+    title: 'Improving Underwater Marine Species Classification Through Imbalance-Aware Learning and Cross-Dataset Evaluation',
+    authors: ['Md Sazzad Hossain', 'Mosa. Farjana Eti', 'Md Saimul Haque Shanto', 'Suzad Mohammad'],
+    venue: 'Applied Intelligence and Informatics (AII 2026)',
+    publication: 'Springer Nature · Communications in Computer and Information Science · pp. 325–339',
+    year: '2026',
+    doi: '10.1007/978-3-032-42348-1_22',
+    paperUrl: 'https://doi.org/10.1007/978-3-032-42348-1_22',
+    citation: 'Hossain, Md Sazzad; Eti, Mosa. Farjana; Shanto, Md Saimul Haque; Mohammad, Suzad. “Improving Underwater Marine Species Classification Through Imbalance-Aware Learning and Cross-Dataset Evaluation.” In Applied Intelligence and Informatics, pp. 325–339. Springer Nature, 2026. https://doi.org/10.1007/978-3-032-42348-1_22',
+  },
+  {
+    id: 'itt-2026',
+    status: 'accepted',
+    topic: 'Consensus and selective referral in visual classification',
+    venue: 'ITT 2026',
+    year: '2026',
+  },
+  {
+    id: 'comesyso-2026',
+    status: 'accepted',
+    title: 'Evaluating Probability-Preserving Inference in Hard-Routed Dermoscopic Skin Lesion Classification',
+    venue: 'CoMeSySo 2026',
+    year: '2026',
+  },
+  {
+    id: 'tidgn-preprint',
+    status: 'preprint',
+    title: 'Topology Invariant Dynamic Graph Networks',
+    venue: 'Research Square',
+    year: '2026',
+  },
 ];
 
 export const milestones = [

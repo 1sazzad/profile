@@ -59,23 +59,49 @@ function Introduction() {
   );
 }
 
+function PublicationEntry({ item }) {
+  return (
+    <li className="publication-entry">
+      <h4 className="paper-title">{item.title || `Research topic: ${item.topic}`}</h4>
+      {item.authors && <p className="paper-authors">{item.authors.join(', ')}</p>}
+      <p className="paper-venue"><em>{item.venue}, {item.year}</em>{item.publication && <> · {item.publication}</>}</p>
+      {item.status === 'accepted' && <p className="publication-status">Accepted · Proceedings publication pending</p>}
+      {item.status === 'preprint' && <p className="publication-status">Preprint · Not a peer-reviewed publication</p>}
+      {item.paperUrl && <div className="paper-links">
+        <a href={item.paperUrl} target="_blank" rel="noopener noreferrer">paper</a>
+        <span aria-hidden="true">|</span>
+        <a href={item.paperUrl} target="_blank" rel="noopener noreferrer">doi</a>
+        <span aria-hidden="true">|</span>
+        <details className="citation-details">
+          <summary>cite</summary>
+          <p>{item.citation}</p>
+        </details>
+      </div>}
+    </li>
+  );
+}
+
 function Publications() {
+  const sections = [
+    { status: 'published', title: 'Published' },
+    { status: 'accepted', title: 'Accepted, not yet published' },
+    { status: 'preprint', title: 'Preprints' },
+  ];
+
   return (
     <section className="content-section" id="publications" aria-labelledby="publications-title">
-      <h2 id="publications-title">Publications &amp; preprints</h2>
-      <p className="section-lead">Selected research works. Conference acceptances are listed separately from journal or proceedings publication.</p>
-      <ol className="publication-list">
-        {publications.map((item) => (
-          <li key={item.venue} className="publication-item">
-            <span className="item-year">{item.year}</span>
-            <div>
-              <p className="publication-subject">{item.subject}</p>
-              <p className="item-meta">{item.venue} <span aria-hidden="true">·</span> <span className="status-text">{item.status}</span></p>
-            </div>
-          </li>
-        ))}
-      </ol>
-      <p className="editorial-note">Full bibliographic details and publication links will be added when confirmed. “Accepted” does not mean the proceedings paper has already appeared online.</p>
+      <h2 id="publications-title">Research papers</h2>
+      <p className="section-lead">Publication records and other scholarly work, grouped by their current status.</p>
+      {sections.map(({ status, title }) => {
+        const entries = publications.filter((item) => item.status === status);
+        if (!entries.length) return null;
+        return <div className="publication-group" key={status}>
+          <h3 className="publication-group-heading">{title} <span>({entries.length})</span></h3>
+          <ul className="academic-publications">
+            {entries.map((item) => <PublicationEntry key={item.id} item={item} />)}
+          </ul>
+        </div>;
+      })}
     </section>
   );
 }
