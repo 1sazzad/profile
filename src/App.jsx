@@ -8,7 +8,7 @@ const email = 's20502004834@nu.ac.bd';
 const navigation = [
   ['about', 'About'],
   ['publications', 'Publications'],
-  ['research', 'Research'],
+  // ['research', 'Research'], // Restore when the research section is ready.
   ['experience', 'Experience'],
   ['gallery', 'Photos'],
   ['contact', 'Contact'],
@@ -60,6 +60,7 @@ function Introduction() {
 }
 
 function PublicationEntry({ item }) {
+  const [showCitation, setShowCitation] = React.useState(false);
   return (
     <li className="publication-entry">
       <h4 className="paper-title">{item.title || `Research topic: ${item.topic}`}</h4>
@@ -68,14 +69,12 @@ function PublicationEntry({ item }) {
       {item.status === 'accepted' && <p className="publication-status">Accepted · Proceedings publication pending</p>}
       {item.status === 'preprint' && <p className="publication-status">Preprint · Not a peer-reviewed publication</p>}
       {item.paperUrl && <div className="paper-links">
-        <a href={item.paperUrl} target="_blank" rel="noopener noreferrer">paper</a>
-        <span aria-hidden="true">|</span>
-        <a href={item.paperUrl} target="_blank" rel="noopener noreferrer">doi</a>
-        <span aria-hidden="true">|</span>
-        <details className="citation-details">
-          <summary>cite</summary>
-          <p>{item.citation}</p>
-        </details>
+        <div className="paper-actions">
+          <a href={item.paperUrl} target="_blank" rel="noopener noreferrer">paper</a>
+          {item.doi && <a href={`https://doi.org/${item.doi}`} target="_blank" rel="noopener noreferrer">doi</a>}
+          {item.citation && <button type="button" onClick={() => setShowCitation(!showCitation)} aria-expanded={showCitation} aria-controls={`citation-${item.id}`}>cite</button>}
+        </div>
+        {item.citation && showCitation && <p className="citation-text" id={`citation-${item.id}`}>{item.citation}</p>}
       </div>}
     </li>
   );
@@ -84,14 +83,15 @@ function PublicationEntry({ item }) {
 function Publications() {
   const sections = [
     { status: 'published', title: 'Published' },
-    { status: 'accepted', title: 'Accepted, not yet published' },
-    { status: 'preprint', title: 'Preprints' },
+    // Restore these when you are ready to display additional papers:
+    // { status: 'accepted', title: 'Accepted, not yet published' },
+    // { status: 'preprint', title: 'Preprints' },
   ];
 
   return (
     <section className="content-section" id="publications" aria-labelledby="publications-title">
       <h2 id="publications-title">Research papers</h2>
-      <p className="section-lead">Publication records and other scholarly work, grouped by their current status.</p>
+      <p className="section-lead">Peer-reviewed publications.</p>
       {sections.map(({ status, title }) => {
         const entries = publications.filter((item) => item.status === status);
         if (!entries.length) return null;
@@ -173,7 +173,7 @@ export default function App() {
       <main id="main" className="site-shell">
         <Introduction />
         <Publications />
-        <Research />
+        {/* <Research /> — restore when the research projects are ready to publish. */}
         <Experience />
         <Gallery />
         <Contact />
