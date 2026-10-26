@@ -1,14 +1,20 @@
 :root {
   font-family: 'Source Sans 3', Arial, Helvetica, sans-serif;
-  color: #283746;
-  background: #fff;
+  --page-bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface-soft: #fcfbf8;
+  --border: #e3e0d8;
+  --text: #283746;
+  --muted: #566675;
+  color: var(--text);
+  background: var(--page-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 28px; }
-body { margin: 0; font-size: 17px; line-height: 1.6; }
+html { scroll-behavior: smooth; scroll-padding-top: 28px; background: var(--page-bg); }
+body { margin: 0; font-size: 17px; line-height: 1.6; background: var(--page-bg); color: var(--text); }
 button, input { font: inherit; }
 button { cursor: pointer; }
 a { color: #165a88; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -19,7 +25,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .skip-link { position: absolute; top: -100px; left: 16px; z-index: 200; background: #fff; padding: 10px 14px; }
 .skip-link:focus { top: 12px; }
 
-.site-header { border-bottom: 1px solid #e4e9ed; }
+.site-header { background: var(--surface); border-bottom: 1px solid var(--border); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 70px; }
 .site-name { color: #1e3545; font-weight: 600; font-size: 17px; white-space: nowrap; text-decoration: none; }
 .site-name:hover { color: #165a88; }
@@ -36,7 +42,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .profile-portrait { margin: 4px 0 0; }
 .profile-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; background: #e9eef0; border: 1px solid #e4e9ed; }
 
-.content-section { border-top: 1px solid #e3e8ed; padding: 32px 0 34px; scroll-margin-top: 18px; }
+.content-section { border-top: 1px solid var(--border); padding: 32px 0 34px; scroll-margin-top: 18px; }
 .content-section h2 { color: #213749; font-size: 26px; font-weight: 600; line-height: 1.3; margin: 0 0 12px; }
 .section-lead { color: #566675; margin: 0 0 18px; max-width: 75ch; }
 .publication-group { margin-top: 23px; }
@@ -112,7 +118,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .contact-section { padding-bottom: 38px; }
 .contact-section p { margin: 0 0 9px; }
 .link-divider { color: #a2adb5; margin-inline: 9px; }
-.site-footer { display: flex; justify-content: space-between; gap: 25px; border-top: 1px solid #e3e8ed; padding-block: 22px 34px; font-size: 12px; color: #72808b; }
+.site-footer { display: flex; justify-content: space-between; gap: 25px; border-top: 1px solid var(--border); padding-block: 22px 34px; font-size: 12px; color: #72808b; }
 
 @media (max-width: 760px) {
   .header-inner { padding-block: 15px; flex-wrap: wrap; gap: 10px; }
@@ -149,3 +155,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 @media (pointer: coarse) {
   .photo-zoom-toolbar button, .dialog-paging button, .dialog-header button, .photo-filters button { min-height: 44px; min-width: 44px; }
 }
+
+/* Subtle academic surface treatments; keep the content column uncluttered. */
+.intro { background: transparent; }
+.section-lead, .intro .affiliation, .paper-venue, .item-meta, .experience-item p, .album-caption, .album-count, .empty-note { color: var(--muted); }
+.photo-filters button, .album-card { background: var(--surface); }
+.album-card { border-color: var(--border); }
