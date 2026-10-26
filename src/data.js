@@ -39,7 +39,7 @@ export const publications = [
     year: '2026',
     doi: '10.1007/978-3-032-42348-1_22',
     paperUrl: 'https://doi.org/10.1007/978-3-032-42348-1_22',
-    citation: 'Hossain, Md Sazzad; Eti, Mosa. Farjana; Shanto, Md Saimul Haque; Mohammad, Suzad. “Improving Underwater Marine Species Classification Through Imbalance-Aware Learning and Cross-Dataset Evaluation.” In Applied Intelligence and Informatics, pp. 325–339. Springer Nature, 2026. https://doi.org/10.1007/978-3-032-42348-1_22',
+    citation: 'Hossain, M.S., Eti, M.F., Shanto, M.S.H., Mohammad, S. (2027). Improving Underwater Marine Species Classification Through Imbalance-Aware Learning and Cross-Dataset Evaluation. In: Mahmud, M., Rahman, M.M., Kaiser, M.S., Ahad, M.A.R., Wang, S., Brown, D.J. (eds) Applied Intelligence and Informatics. AII 2026. Communications in Computer and Information Science, vol 3206. Springer, Cham. https://doi.org/10.1007/978-3-032-42348-1_22',
   },
   {
     id: 'itt-2026',
